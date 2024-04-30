@@ -11,6 +11,7 @@
 #include "uart.h"
 #include "adc.h"
 #include "display.h"
+#include "relay.h"
 #include "modbus.h"
 
 FILE lcd_out = FDEV_SETUP_STREAM(LCD_write_char, NULL, _FDEV_SETUP_WRITE);
@@ -53,6 +54,7 @@ int main(void)
 	ADC_init();
 	USART_Init();
 	LCD_init();
+	RELAY_INIT();
 	
 	TCCR0B |= (1 << CS02);
 	TCNT0 = 0;

@@ -181,6 +181,12 @@
     <Compile Include="modbus.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="relay.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="relay.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="timer.c">
       <SubType>compile</SubType>
     </Compile>

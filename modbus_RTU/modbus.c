@@ -25,7 +25,7 @@ static uint8_t modbus_check_address(uint8_t *request)
 	}
 }
 
-/*static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
+static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
 {
 	uint16_t crc_register = 0xFFFF;
 	
@@ -47,9 +47,9 @@ static uint8_t modbus_check_address(uint8_t *request)
 	}
 
 	return crc_register;
-}*/
+}
 
-static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
+/*static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
 {
 	uint8_t CRC_reg_High = 0xFF;
 	uint8_t CRC_reg_Low = 0xFF;
@@ -123,6 +123,16 @@ static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
 		CRC_reg_Low = LUT_CRC_Low[LUT_index];
 	}
 	return (CRC_reg_Low << 8 | CRC_reg_High) ;
+}*/
+
+static uint8_t modbus_calculate_lrc(uint8_t *data, uint8_t size)
+{
+	uint8_t LRC = 0;
+		
+	for(uint8_t i = 0; i < size; i++)
+		LRC += data[i];
+	
+	return (unsigned char)(-LRC);
 }
 
 void modbus_process_request(uint8_t *request) 
@@ -249,9 +259,12 @@ void modbus_process_request(uint8_t *request)
 	
 	if(exception_code != 0x00)
 	{
-		buffer_size = 3;
+		buffer_size = 5;
 		buffer[1] |= 0x80;
 		buffer[2] = exception_code;
+		crc = modbus_calculate_crc(buffer, 3);
+		buffer[3] = (uint8_t)crc;
+		buffer[4] = (uint8_t)(crc >> 8);
 	}
 	USART_Transmit_array(buffer, buffer_size);
 	received_index = 0;
