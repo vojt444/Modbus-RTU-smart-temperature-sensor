@@ -39,6 +39,11 @@ float ADC_read_voltage(uint8_t channel)
 	return (float)ADC*5.0/1024; 
 }
 
+float get_voltage(uint8_t val)
+{
+	return (float)val*5.0/1024;
+}
+
 float get_temperature(float voltage)
 {
 	//float voltage = ADC_to_voltage(); 

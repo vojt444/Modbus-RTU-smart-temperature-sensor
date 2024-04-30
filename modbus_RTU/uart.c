@@ -12,7 +12,7 @@ void USART_Init(void)
 	UBRR0H = (uint8_t)(UBRR_VALUE >> 8); 
 	UBRR0L = (uint8_t)(UBRR_VALUE); 
 	
-	UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0); 
+	UCSR0B = (1<<RXEN0) | (1<<TXEN0) | (1<<RXCIE0);
 	UCSR0C = (1<<UCSZ01) | (1<<UCSZ00); 
 }
 
@@ -22,6 +22,14 @@ void USART_Transmit(uint8_t data)
 	while(!(UCSR0A & (1<<UDRE0))); 
 	
 	UDR0 = data; 
+}
+
+void USART_Transmit_array(uint8_t *data, uint8_t length)
+{
+	for(uint8_t i = 0; i < length; i++)
+	{
+		USART_Transmit(data[i]);
+	}
 }
 
 uint8_t USART_Receive(void)

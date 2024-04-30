@@ -21,6 +21,7 @@
 void ADC_init(void);
 uint16_t ADC_read(uint8_t channel);
 float ADC_read_voltage(uint8_t channel);
+float get_voltage(uint8_t val);
 float get_temperature(float voltage);
 
 
