@@ -69,7 +69,7 @@ int main(void)
 			LCD_set_cursor(0,0);
 			fprintf(&lcd_out, "%.1f C", get_temperature(ADC_read_voltage(1)));
 			LCD_set_cursor(1,0);
-			fprintf(&lcd_out, "%d %d", lower_limit, upper_limit);
+			fprintf(&lcd_out, "L:%d C U:%d C", lower_limit, upper_limit);
 		}
     }
 }

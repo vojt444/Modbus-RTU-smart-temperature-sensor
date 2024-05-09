@@ -125,16 +125,6 @@ static uint16_t modbus_calculate_crc(uint8_t *data, uint8_t length)
 	return (CRC_reg_Low << 8 | CRC_reg_High) ;
 }*/
 
-static uint8_t modbus_calculate_lrc(uint8_t *data, uint8_t size)
-{
-	uint8_t LRC = 0;
-		
-	for(uint8_t i = 0; i < size; i++)
-		LRC += data[i];
-	
-	return (unsigned char)(-LRC);
-}
-
 void modbus_process_request(uint8_t *request) 
 {
 	uint8_t buffer[MODBUS_BUFFER_SIZE] = {0};
@@ -189,7 +179,9 @@ void modbus_process_request(uint8_t *request)
 						case STATUS_WORD:
 							buffer[buffer_data_index_hi] = 0x00;
 							buffer_data_index_hi = buffer_data_index_hi + 2;
+							// watchdog
 							modbus_status_register ^= (1 << WATCHDOG_BIT);
+							// temperature bits
 							if(temperature_float < lower_limit)
 							{
 								modbus_status_register &= ~(1 << TEMP_OK);
